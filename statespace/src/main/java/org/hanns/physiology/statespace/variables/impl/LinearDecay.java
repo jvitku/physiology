@@ -17,16 +17,11 @@ import org.hanns.physiology.statespace.variables.AbsStateVariable;
  */
 public class LinearDecay extends AbsStateVariable{
 
-	// how many steps it takes to get to the critical area?
-	public static final double DEF_DECAY = 0.01;
 	
 	public static final double THRESHOLD = 1;
 
-	protected double decay;
-
 	public LinearDecay(int numDimensions){
 		super(numDimensions);
-		this.decay = DEF_DECAY;
 	}
 
 	/**
@@ -59,12 +54,6 @@ public class LinearDecay extends AbsStateVariable{
 				this.myValue = DEF_CRITICAL;
 		}
 	}
-
-	public void setDecay(double decay){
-		this.decay = decay;
-	}
-
-	public double getDecay(){ return this.decay; }
 
 	protected double sum(float[] input){
 		double out = 0;

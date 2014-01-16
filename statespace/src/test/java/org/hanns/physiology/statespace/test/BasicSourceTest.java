@@ -13,7 +13,6 @@ import org.junit.Test;
 
 public class BasicSourceTest {
 
-
 	/**
 	 * Try basic funcitonality of basic state variable:
 	 * -initialize (in limbo area, no big motivation)
@@ -60,7 +59,6 @@ public class BasicSourceTest {
 		// after 5 steps, we should be in the middle of motivation
 		// (SIgmoid)
 		assertTrue(s.getMotivation()==0.5);
-		
 
 		// make few steps..
 		for(int i=0; i<5; i++){

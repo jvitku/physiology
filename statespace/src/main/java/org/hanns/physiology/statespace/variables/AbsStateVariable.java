@@ -7,8 +7,13 @@ public abstract class AbsStateVariable implements StateVariable{
 	
 	public static final double INIT_VAL = DEF_LIMBO;
 	protected double myValue;
+
+	// how many steps it takes to get to the critical area?
+	public static final double DEF_DECAY = 0.01;
 	
 	protected int numDims;
+	
+	protected double decay;
 	
 	// reinforcement just received?
 	protected boolean justReinforced= false;	
@@ -16,6 +21,7 @@ public abstract class AbsStateVariable implements StateVariable{
 	public AbsStateVariable(int numDimensions){
 		this.numDims = numDimensions;
 		this.justReinforced = false;
+		this.decay = DEF_DECAY;
 		this.softReset(false);
 	}
 	
@@ -28,6 +34,12 @@ public abstract class AbsStateVariable implements StateVariable{
 		}
 		return true;
 	}
+	
+	public void setDecay(double decay){
+		this.decay = decay;
+	}
+
+	public double getDecay(){ return this.decay; }
 	
 	@Override
 	public boolean justReinforced() { return this.justReinforced; }

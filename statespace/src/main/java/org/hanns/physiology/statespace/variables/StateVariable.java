@@ -59,4 +59,19 @@ public interface StateVariable extends Resettable{
 	 * @return return number of dimensions expected on the input of {@link #makeStep(float[])} method.
 	 */
 	public int getDimensions();
+	
+	/**
+	 * Set decay: how fast the variable should decay towards purgatory area
+	 * @param decay interval [0,1] defining speed of decay
+	 */
+	public void setDecay(double decay);
+
+	/**
+	 * Return the speed of decay.
+	 * 
+	 * @return from interval [0,1] defining how fast the value of variable 
+	 * goes to the purgatory area
+	 */
+	public double getDecay();
+	
 }
