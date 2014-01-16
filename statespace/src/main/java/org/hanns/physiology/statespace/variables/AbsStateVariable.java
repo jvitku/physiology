@@ -16,6 +16,7 @@ public abstract class AbsStateVariable implements StateVariable{
 	public AbsStateVariable(int numDimensions){
 		this.numDims = numDimensions;
 		this.justReinforced = false;
+		this.softReset(false);
 	}
 	
 	protected boolean checkDimensions(float[] input){
@@ -45,7 +46,7 @@ public abstract class AbsStateVariable implements StateVariable{
 	@Override
 	public void softReset(boolean arg0) {
 		this.justReinforced = false;
-		this.myValue = DEF_LIMBO;
+		this.myValue = INIT_VAL;
 	}
 	
 	@Override

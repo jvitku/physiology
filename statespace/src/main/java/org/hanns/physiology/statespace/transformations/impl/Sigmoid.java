@@ -26,11 +26,10 @@ public class Sigmoid implements Transformation{
 		// flip it (now 1 means worst case)
 		stateVar = 1-stateVar;	
 		// re-scale to the interval [-6,6]
-		double x = min+(min+max)*stateVar;
+		double x = min+(-min+max)*stateVar;
+		
 		// apply sigmoid
-		double out = 1/(1+Math.exp(-x));
-		// move sigmoid above zero
-		out = out+1;
+		double out = 1.0/(1.0+Math.exp(-x));
 		return (float)out;
 	}
 

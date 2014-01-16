@@ -18,13 +18,12 @@ public abstract class AbsSource implements Source{
 
 	protected double myVal;
 
-
-
 	public AbsSource(StateVariable var,Transformation t){
 
 		this.myVar = var;
 		this.myT = t;
 		this.step = 0;
+		this.myVal = DEF_MIN;
 
 	}
 
@@ -59,7 +58,7 @@ public abstract class AbsSource implements Source{
 	 * Check if the value of the state variable is from the 
 	 * expected range.
 	 * @param stateVal value of my state variable
-	 * @return true if range is OK, print error and rerurn false if not
+	 * @return true if range is OK, print error and return false if not
 	 */
 	protected boolean checkRane(float stateVal){
 		if(stateVal<DEF_MIN || stateVal>DEF_MAX){

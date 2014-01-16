@@ -8,9 +8,9 @@ import org.hanns.physiology.statespace.variables.AbsStateVariable;
  * the variable {@link #decay}.
  * 
  *  Note that all values on multidimensional input are 
- *  summed together. If the value received is higher than 
- *  the {@link #THRESHOLD}, the variable returns to 
- *  the limbo area, nothing happens in other cases.
+ *  summed together. If the value received is the same or 
+ *  higher than the {@link #THRESHOLD}, the variable 
+ *  returns to the limbo area, nothing happens in other cases.
  * 
  * @author Jaroslav Vitku
  *
@@ -50,7 +50,7 @@ public class LinearDecay extends AbsStateVariable{
 			return;
 
 		double in = this.sum(input);
-		if(in > THRESHOLD){
+		if(in >= THRESHOLD){
 			this.myValue = DEF_LIMBO;
 			this.justReinforced = true;
 		}else{
