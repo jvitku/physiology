@@ -7,7 +7,7 @@ import ctu.nengoros.network.common.Resettable;
  * In the limbo area, the variable does not produce any motivation. 
  * The farer from the limbo area, the bigger the motivation produced is.
  * The dynamics is computed in the method makeStep, which should be called each 
- * simualtion step. 
+ * simulation step. 
  * 
  * @author Jaroslav Vitku
  *

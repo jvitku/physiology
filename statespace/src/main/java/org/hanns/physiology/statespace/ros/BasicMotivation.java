@@ -22,7 +22,7 @@ import org.hanns.physiology.statespace.variables.impl.LinearDecay;
  * @author Jaroslav Vitku
  *
  */
-public class BasicMotivationSource extends AbsMotivationSource {
+public class BasicMotivation extends AbsMotivationSource {
 
 	@Override
 	public void initStructures() {

@@ -76,7 +76,6 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 
 		myLog(me+"Node configured and ready now!");
 
-
 	}
 
 	@Override
@@ -123,13 +122,11 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 					if(step % logPeriod==0)
 						myLog(me+"<-"+topicDataIn+" Received new reward data: "
 								+SL.toStr(data));
-
 					// implement this
 					onNewDataReceived(data);
 				}
 			}
 		});
-
 	}
 	
 	/**
@@ -144,7 +141,6 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 	@Override
 	protected void parseParameters(ConnectedNode connectedNode) {
@@ -175,8 +171,8 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 	@Override
 	protected void registerParameters() {
 		paramList = new ParamList();
-		paramList.addParam(noInputsConf, ""+DEF_NOINPUTS,"No. dimensions of input, input is summed " +
-				"and the value is evaluated as a reinforcement. Def. val. is 1");
+		paramList.addParam(noInputsConf, ""+DEF_NOINPUTS,"Num dimensions of input data, input data is summed " +
+				"and the value is evaluated as a reinforcement.");
 
 		paramList.addParam(shouldLog, ""+DEF_LOG, "Enables logging");
 		paramList.addParam(logPeriodConf, ""+DEF_LOGPERIOD, "How often to log?");

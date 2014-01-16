@@ -16,7 +16,6 @@ import org.hanns.physiology.statespace.variables.AbsStateVariable;
  *
  */
 public class LinearDecay extends AbsStateVariable{
-
 	
 	public static final double THRESHOLD = 1;
 
