@@ -14,10 +14,10 @@ import org.junit.Test;
 public class BasicSourceTest {
 
 	/**
-	 * Try basic funcitonality of basic state variable:
+	 * Try basic functionality of basic state variable:
 	 * -initialize (in limbo area, no big motivation)
-	 * -make few steps, check motivation increates, check values
-	 * -make few steps, check motivaion is max
+	 * -make few steps, check motivation increases, check values
+	 * -make few steps, check motivation is max
 	 * -send reward, check variable in limbo, motivation near 0
 	 * 
 	 */

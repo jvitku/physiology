@@ -18,8 +18,8 @@
 if [ "$1" == "-h" ]; then
 	echo ""
 	echo "Run the state variable with configurable liear decay"
-	echo "The variable produces own motivation, based on number of steps from the last reward"
-	echo "Two outputs specify: reward just received (if received) and strength of motivation"
+	echo "The variable produces own motivation, based on number of steps from the last reward "
+	echo "Two outputs specify: reward just received (if received) and strength of motivation "
 	echo ""
 	exit
 fi

@@ -34,10 +34,10 @@ public class BasicMotivation extends AbsMotivationSource {
 	@Override
 	protected void onNewDataReceived(float[] data) {
 		this.source.makeStep(data);
-		
+
 		float rew = this.source.getReinforcement();
 		float mot = this.source.getMotivation();
-		
+
 		// publish the current reinforcement and motivation values
 		std_msgs.Float32MultiArray fl = dataPublisher.newMessage();
 		fl.setData(new float[]{rew,mot});

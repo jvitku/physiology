@@ -27,6 +27,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 	 */
 	public static final String topicDataOut = io+"MotivationReward";
 	public static final String topicDataIn  = io+"Reward";
+	
 	/**
 	 * Variable configuration
 	 */
