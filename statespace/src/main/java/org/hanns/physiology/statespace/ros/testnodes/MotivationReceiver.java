@@ -13,13 +13,21 @@ import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
 import ctu.nengoros.util.SL;
 
 /**
- * Receives the motivation and reward by the {@link AbsMotivationSource}
+ * Receives the motivation and reward from the {@link AbsMotivationSource}
+ * 
+ * After pressing the enter, the non-zero reward is published
+ * -after receiving data (reward,motivation) the R=0 is responded 
+ * -after each pressing the enter, the non-zero reward is published, which returns
+ * the motivation back towards zero
  * 
  * @author Jaroslav Vitku
  *
  */
 public class MotivationReceiver extends AbstractHannsNode{
 
+	public final int sleeptime = 10;
+	public final int maxwait = 10000;
+	
 	public static String name = "MotivationReceiver";
 
 	public static final int DLP = 100; // default log period
@@ -34,12 +42,7 @@ public class MotivationReceiver extends AbstractHannsNode{
 	// publish reward occasionally
 	public static final String topicDataOut = AbsMotivationSource.topicDataIn;
 
-	//public static final String topicDataIn = io+"MotivationReward";
-	// publish reward occasionally
-	//public static final String topicDataOut  = io+"Reward";
-
 	public int inputDims = 2;	// publishes motivation and reward
-
 	private int step = 0;
 
 	@Override
@@ -57,14 +60,25 @@ public class MotivationReceiver extends AbstractHannsNode{
 						"the R=0\n\n");
 				
 				System.in.read();
-				
-				std_msgs.Float32MultiArray message = dataPublisher.newMessage();
-				message.setData(new float[]{DEFR});
-				dataPublisher.publish(message);
+				this.sendReward();
 			} catch (IOException e) { }
 		}
-		
-
+	}
+	
+	/**
+	 * Current "simulation step"
+	 * 
+	 * @return basically the number of processed (correctly formatted) messages 
+	 */
+	public int getStep(){ return this.step; }
+	
+	/**
+	 * publishes reward over the ROS network to a predefined topic
+	 */
+	public void sendReward(){
+		std_msgs.Float32MultiArray message = dataPublisher.newMessage();
+		message.setData(new float[]{DEFR});
+		dataPublisher.publish(message);
 	}
 
 	@Override
@@ -127,5 +141,10 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 	@Override
 	protected void registerParameters() {}
-
+	
+	@Override
+	public boolean isReady(){
+		return (log!=null && dataPublisher!=null);
+	}
+	
 }

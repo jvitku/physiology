@@ -45,4 +45,10 @@ public class BasicMotivation extends AbsMotivationSource {
 				+rew+" and motivation="+mot);
 		dataPublisher.publish(fl);
 	}
+
+	@Override
+	protected boolean isReady() {
+		return (dataPublisher !=null && source!=null 
+				&& t!=null && var!=null && source !=null);
+	}
 }
