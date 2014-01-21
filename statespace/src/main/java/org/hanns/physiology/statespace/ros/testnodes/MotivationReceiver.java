@@ -1,5 +1,7 @@
 package org.hanns.physiology.statespace.ros.testnodes;
 
+import java.io.IOException;
+
 import org.hanns.physiology.statespace.ros.AbsMotivationSource;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -21,7 +23,9 @@ public class MotivationReceiver extends AbstractHannsNode{
 	public static String name = "MotivationReceiver";
 
 	public static final int DLP = 100; // default log period
-	
+
+	// default reinforcement to be sent after pressing thee nter
+	public static final int DEFR = 2;	
 	/**
 	 * Node IO
 	 */
@@ -29,7 +33,7 @@ public class MotivationReceiver extends AbstractHannsNode{
 	public static final String topicDataIn = AbsMotivationSource.topicDataOut;
 	// publish reward occasionally
 	public static final String topicDataOut = AbsMotivationSource.topicDataIn;
-	
+
 	//public static final String topicDataIn = io+"MotivationReward";
 	// publish reward occasionally
 	//public static final String topicDataOut  = io+"Reward";
@@ -40,13 +44,29 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
-		
+		log = connectedNode.getLog();
+		log.info(me+"started, parsing parameters");
+
 		this.buildDataIO(connectedNode);
+
+		System.out.println("\n\nThe communication is in closed-loop and event-driven");
+
+		while(true){
+			try {
+				System.out.println("\n\nPress any key to send reinforcement, otherwise" +
+						"the R=0\n\n");
+				
+				System.in.read();
+				
+				std_msgs.Float32MultiArray message = dataPublisher.newMessage();
+				message.setData(new float[]{DEFR});
+				dataPublisher.publish(message);
+			} catch (IOException e) { }
+		}
 		
-		
-		
+
 	}
-	
+
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of(name); }
 
@@ -85,10 +105,13 @@ public class MotivationReceiver extends AbstractHannsNode{
 	 * @param data array of floats received from the basic Source motivation
 	 */
 	protected void onNewDataReceived(float[] data){
-		System.out.println("new data "+SL.toStr(data));
-		
+		System.out.println(step+++"new data "+SL.toStr(data));
+
+		std_msgs.Float32MultiArray message = dataPublisher.newMessage();
+		message.setData(new float[]{0});
+		dataPublisher.publish(message);
 	}
-	
+
 	@Override
 	public ProsperityObserver getProsperityObserver() { return null; }
 

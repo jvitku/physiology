@@ -24,7 +24,6 @@ public abstract class AbsSource implements Source{
 		this.myT = t;
 		this.step = 0;
 		this.myVal = DEF_MIN;
-
 	}
 
 	@Override
