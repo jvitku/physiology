@@ -1,7 +1,5 @@
 package org.hanns.physiology.statespace.ros.testnodes;
 
-import java.io.IOException;
-
 import org.hanns.physiology.statespace.ros.AbsMotivationSource;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -27,13 +25,19 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 	public final int sleeptime = 10;
 	public final int maxwait = 10000;
-	
+
 	public static String name = "MotivationReceiver";
 
 	public static final int DLP = 100; // default log period
 
 	// default reinforcement to be sent after pressing thee nter
-	public static final int DEFR = 2;	
+	public static final int DEFR = 2;
+
+	public float lastRecMotivation = -1;
+	public float lastRecReward = -1;
+
+	private volatile boolean allowAutoResponse = true;	// event-driven opearation?
+
 	/**
 	 * Node IO
 	 */
@@ -52,26 +56,24 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 		this.buildDataIO(connectedNode);
 
-		System.out.println("\n\nThe communication is in closed-loop and event-driven");
-
-		while(true){
-			try {
-				System.out.println("\n\nPress any key to send reinforcement, otherwise" +
-						"the R=0\n\n");
-				
-				System.in.read();
-				this.sendReward();
-			} catch (IOException e) { }
-		}
+		System.out.println("\n\nNode initialized. Use methods sendRward(), getStep() etc..");
 	}
-	
+
+	/**
+	 * Allow event-driven operation of the node?
+	 * @param response false if the response should not be sent automatically
+	 */
+	public void setAutoResponse(boolean response){
+		this.allowAutoResponse = response;
+	}
+
 	/**
 	 * Current "simulation step"
 	 * 
 	 * @return basically the number of processed (correctly formatted) messages 
 	 */
 	public int getStep(){ return this.step; }
-	
+
 	/**
 	 * publishes reward over the ROS network to a predefined topic
 	 */
@@ -121,9 +123,14 @@ public class MotivationReceiver extends AbstractHannsNode{
 	protected void onNewDataReceived(float[] data){
 		System.out.println(step+++"new data "+SL.toStr(data));
 
-		std_msgs.Float32MultiArray message = dataPublisher.newMessage();
-		message.setData(new float[]{0});
-		dataPublisher.publish(message);
+		this.lastRecReward = data[0];
+		this.lastRecMotivation = data[1];
+
+		if(this.allowAutoResponse){
+			std_msgs.Float32MultiArray message = dataPublisher.newMessage();
+			message.setData(new float[]{0});
+			dataPublisher.publish(message);
+		}
 	}
 
 	@Override
@@ -141,10 +148,10 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 	@Override
 	protected void registerParameters() {}
-	
+
 	@Override
 	public boolean isReady(){
 		return (log!=null && dataPublisher!=null);
 	}
-	
+
 }

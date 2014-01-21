@@ -17,7 +17,7 @@ import org.hanns.physiology.statespace.variables.impl.LinearDecay;
  *    After receiving the reward (sum of inputs is equal or 
  *    higher than 1), the variable is set to the limbo area
  *    and the reinforcement output is set to predefined nonzero
- *    vaelue (15 for now).
+ *    value (15 for now).
  *    
  * @author Jaroslav Vitku
  *
@@ -41,7 +41,7 @@ public class BasicMotivation extends AbsMotivationSource {
 		// publish the current reinforcement and motivation values
 		std_msgs.Float32MultiArray fl = dataPublisher.newMessage();
 		fl.setData(new float[]{rew,mot});
-		System.out.println("step+ "+step+" publihing r="
+		System.out.println("step "+step+++" publihing r="
 				+rew+" and motivation="+mot);
 		dataPublisher.publish(fl);
 	}
