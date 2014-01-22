@@ -2,7 +2,7 @@
 #
 # the source of motivaiton has:
 #   -n inputs, these are summed, if the value is equal or more  than threshold (1 now), the reinforcement is received, state variable is set back to limbo
-#   -2 outputs defining: {reward just received, size of current motivation}
+#   -2 outputs defining: {reward just received, size of the current motivation}
 #
 # by Jaroslav Vitku [vitkujar@fel.cvut.cz]
 
@@ -16,30 +16,21 @@ from ctu.nengoros.comm.rosutils import RosUtils as RosUtils
 from org.hanns.physiology.statespace.ros import BasicMotivation as Motivation
 import motivation
 
-net=nef.Network('Motivation source')
+net=nef.Network('Motivation source demo')
 net.add_to_nengo()  
 
-#RosUtils.setAutorun(False)     # Do we want to autorun roscore and rxgraph? (tru by default)
-#RosUtils.prefferJroscore(True)  # preffer jroscore before the roscore? 
-
-# 1 input, decay default, log period 1
-finderA = motivation.basicConfigured("RL", net, 1, Motivation.DEF_DECAY,1)   
+# params: name,net,noInputs,decay per step (from 1 to 0), log period
+source = motivation.basicConfigured("BasicMotivation", net, 1, Motivation.DEF_DECAY, 1)   
 
 #Create a white noise input function with params: baseFreq, maxFreq [rad/s], RMS, seed
-# first dimension is reward, do not generate signal (ignored in the connection matrix)
-generator=FunctionInput('StateGenerator', [FourierFunction(0,0,0,12),
-    FourierFunction(.5, 11,1.6, 17),FourierFunction(.2, 21,1.1, 11)],Units.UNK) 
+# generate random values, if val>1, the reward is received and the motivaiton source goes to the limbo area
+reward=FunctionInput('RewardGenerator', [FourierFunction(.1, 10,-0.5, 12)],Units.UNK)
 
-# first dimension is reward, do not generate states (these are ignored in the conneciton matrix)
-reward=FunctionInput('RewardGenerator', [FourierFunction(.1, 10,1, 12),
-        FourierFunction(0,0,0, 17),FourierFunction(0,0,0, 17),],Units.UNK)
-
-net.add(generator)
+#net.add(source)
 net.add(reward)
 
 # data
-#net.connect(generator,	finderA.newTerminationFor(QLambda.topicDataIn,[0,1,1]))
-#net.connect(reward,		finderA.newTerminationFor(QLambda.topicDataIn,[1,0,0]))
-
+net.connect(reward,	source.getTermination(Motivation.topicDataIn))
+#net.connect(reward,	source.newTerminationFor(Motivation.topicDataIn,[1]))
 
 print 'Configuration complete.'

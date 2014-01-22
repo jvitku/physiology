@@ -19,8 +19,9 @@ classs = "org.hanns.physiology.statespace.ros.BasicMotivation"
 
 
 # Synchronous NeuralModule implementing simple source of agents motivation
-def basic(name, noInputs=1, decay=Motivation.DEF_DECAY, logPeriod=100):
+def basic(name, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD):
 
+    # configure the node during startup from "the commandline"
 	command = [classs, '_'+Motivation.noInputsConf+ ':=' + str(noInputs), 
 	'_'+Motivation.decayConf+':='+str(decay),
 	'_'+Motivation.logPeriodConf+':='+str(logPeriod)]
@@ -29,26 +30,28 @@ def basic(name, noInputs=1, decay=Motivation.DEF_DECAY, logPeriod=100):
 	g.addNode(command, "Motivation", "java");
 	module = NeuralModule(name+'_Motivation', g, False)
 
-	module.createEncoder(Motivation.topicDecay,"float",1); 				# decay config
+    # connect the decay parameter to the Nengoros network (changed online)
+	module.createEncoder(Motivation.topicDecay,"float", 1); 			# decay config
 
-    #TODO
-	#module.createDecoder(QLambda.topicProsperity,"float",1);			# float[]{prosperity, coverage, reward/step}
+    # TODO - MSD from the limbo area
+	#module.createDecoder(Motivation.topicProsperity,"float",1);		# float[]{prosperity}
 
-	module.createDecoder(QLambda.topicDataOut, "float", 2)              # decode float[]{reward,motivation}
-	module.createEncoder(Motivation.topicDataIn, "float", noInputs) 	# encode input data
+	module.createDecoder(Motivation.topicDataOut, "float", 2)           # decode float[]{reward,motivation}
+	module.createEncoder(Motivation.topicDataIn, "float", noInputs) 	# encode input data (sum rewards here)
 
 	return module
-	
-def basicConfigured(name, net, noInputs=1, decay=Motivation.DEF_DECAY, logPeriod=100):
+
+# adds to the network MotivationSource and constant source of config signal, returns the source
+def basicConfigured(name, net, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD):
 
 	# build the node
 	bb = basic(name, noInputs, decay, logPeriod)
 	net.add(bb)
 
-	# define the configuration
-	net.make_input('decay',[Motivation.DEF_DECAY])
+	# define the signal source which provides value of the default decay
+	net.make_input(name+'_decay',[Motivation.DEF_DECAY])
 
-	# wire it
-	net.connect('dcay', mod.getTermination(Motivation.topicDecay))
+	# connect to the decay port
+	net.connect(name+'_decay', bb.getTermination(Motivation.topicDecay))
 
-	return mod
+	return bb
