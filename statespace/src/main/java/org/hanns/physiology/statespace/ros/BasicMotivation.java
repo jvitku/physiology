@@ -83,4 +83,10 @@ public class BasicMotivation extends AbsMotivationSource {
 		rewardVal = (float)reward;
 		rewardThr = r.getMyDouble(rewardThrConf, DEF_REWTHRESHOLD);
 	}
+
+	@Override
+	public float getProsperity() { return o.getProsperity(); }
+
+	@Override
+	public String listParams() { return this.paramList.listParams(); }
 }

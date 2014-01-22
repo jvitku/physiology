@@ -12,10 +12,10 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
 import ctu.nengoros.network.node.AbstractHannsNode;
+import ctu.nengoros.network.node.infrastructure.rosparam.impl.PrivateRosparam;
+import ctu.nengoros.network.node.infrastructure.rosparam.manager.ParamList;
 import ctu.nengoros.network.node.observer.Observer;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
-import ctu.nengoros.rosparam.impl.PrivateRosparam;
-import ctu.nengoros.rosparam.manager.ParamList;
 import ctu.nengoros.util.SL;
 
 public abstract class AbsMotivationSource extends AbstractHannsNode{
@@ -61,6 +61,8 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
+		
+		
 		log = connectedNode.getLog();
 
 		log.info(me+"started, parsing parameters");
@@ -78,6 +80,8 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		// this.buildProsperityPublisher(connectedNode); // TODO
 		this.buildConfigSubscribers(connectedNode);
 		this.buildDataIO(connectedNode);
+		
+		super.fullName = connectedNode.getResolver().getNamespace()+s+name;
 
 		myLog(me+"Node configured and ready now!");
 	}
@@ -149,7 +153,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 	@Override
 	protected void parseParameters(ConnectedNode connectedNode) {
 		r = new PrivateRosparam(connectedNode);
-		willLog = r.getMyBoolean(shouldLog, DEF_LOG);
+		logToFile= r.getMyBoolean(logToFileConf, DEF_LTF);
 		logPeriod = r.getMyInteger(logPeriodConf, DEF_LOGPERIOD);
 
 		this.myLog(me+"parsing parameters");
@@ -175,8 +179,8 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		paramList.addParam(noInputsConf, ""+DEF_NOINPUTS,"Num dimensions of input data, input data is summed " +
 				"and the value is evaluated as a reinforcement.");
 
-		paramList.addParam(shouldLog, ""+DEF_LOG, "Enables logging");
-		paramList.addParam(logPeriodConf, ""+DEF_LOGPERIOD, "How often to log?");
+		paramList.addParam(logToFileConf, ""+DEF_LTF, "Enables logging into file");
+		paramList.addParam(logPeriodConf, ""+DEF_LOGPERIOD, "How often to log? -1 means never");
 
 		paramList.addParam(decayConf, ""+DEF_DECAY, "Speed of decay of state variable each simulation step.");
 	}

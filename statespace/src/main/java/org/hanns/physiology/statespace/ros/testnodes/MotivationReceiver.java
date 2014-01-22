@@ -57,6 +57,8 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 		this.buildDataIO(connectedNode);
 
+		super.fullName = connectedNode.getResolver().getNamespace()+s+name;
+		
 		System.out.println("\n\nNode initialized. Use methods sendRward(), getStep() etc..");
 	}
 
@@ -154,5 +156,18 @@ public class MotivationReceiver extends AbstractHannsNode{
 	public boolean isReady(){
 		return (log!=null && dataPublisher!=null);
 	}
+
+	@Override
+	public float getProsperity() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public String listParams() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }
