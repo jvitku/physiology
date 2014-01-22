@@ -27,6 +27,7 @@ public class MotivationReceiver extends AbstractHannsNode{
 	public final int maxwait = 10000;
 
 	public static String name = "MotivationReceiver";
+	public static final String me = "["+name+"] ";
 
 	public static final int DLP = 100; // default log period
 

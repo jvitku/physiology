@@ -19,7 +19,7 @@ import motivation
 net=nef.Network('Motivation source demo')
 net.add_to_nengo()  
 
-# params: name,net,noInputs,decay per step (from 1 to 0), log period
+# params: name,net,noInputs,decay per step (from 1 to 0), log period, rewardValue, rewardThreshold
 source = motivation.basicConfigured("BasicMotivation", net, 1, Motivation.DEF_DECAY, 1)   
 
 #Create a white noise input function with params: baseFreq, maxFreq [rad/s], RMS, seed
@@ -33,4 +33,10 @@ net.add(reward)
 net.connect(reward,	source.getTermination(Motivation.topicDataIn))
 #net.connect(reward,	source.newTerminationFor(Motivation.topicDataIn,[1]))
 
+
 print 'Configuration complete.'
+print ''
+print 'One motiavtion source is connected to its configuration (defining decay speed)'
+print 'and source of motivation, if the motivation is above the threshold, the '
+print 'physiological variable returns to the limbo area, where no motivation is produced.'
+print 'With thime, the motivaiton increases again.'

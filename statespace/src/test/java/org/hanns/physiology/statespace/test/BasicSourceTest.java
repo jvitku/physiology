@@ -49,8 +49,10 @@ public class BasicSourceTest {
 		// make few steps..
 		for(int i=1; i<5; i++){
 			s.makeStep(new float[]{0});
+			
 			System.out.println("variable is : "+var.getValue()+
 					",motivation is now: "+s.getMotivation());
+			
 			assertTrue(s.getMotivation()>prev);
 			prev = s.getMotivation();
 			assertTrue(s.getReinforcement()==0);

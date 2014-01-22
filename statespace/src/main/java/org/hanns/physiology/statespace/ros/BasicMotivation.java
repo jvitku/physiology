@@ -3,6 +3,9 @@ package org.hanns.physiology.statespace.ros;
 import org.hanns.physiology.statespace.motivationSource.impl.BasicSource;
 import org.hanns.physiology.statespace.transformations.impl.Sigmoid;
 import org.hanns.physiology.statespace.variables.impl.LinearDecay;
+import org.ros.node.ConnectedNode;
+
+import ctu.nengoros.util.SL;
 
 
 /**
@@ -23,12 +26,22 @@ import org.hanns.physiology.statespace.variables.impl.LinearDecay;
  *
  */
 public class BasicMotivation extends AbsMotivationSource {
+	
+	// value of reward that is published further after receiving a reward
+	public static final float DEF_REWARD = BasicSource.DEF_REWARD;
+	public static final String rewardConf = "rewardValue";
+	public float rewardVal;
+	
+	// all values above this value are evaluated as receiving reward  
+	public static final double DEF_REWTHRESHOLD = LinearDecay.DEF_THRESHOLD;
+	public static final String rewardThrConf = "rewardThrValue";
+	public double rewardThr;
 
 	@Override
 	public void initStructures() {
 		this.t = new Sigmoid();
-		this.var = new LinearDecay(this.inputDims,this.decay);
-		this.source = new BasicSource(var,t);
+		this.var = new LinearDecay(this.inputDims,this.decay, this.rewardThr);
+		this.source = new BasicSource(var,t,this.rewardVal);
 	}
 
 	@Override
@@ -37,12 +50,13 @@ public class BasicMotivation extends AbsMotivationSource {
 
 		float rew = this.source.getReinforcement();
 		float mot = this.source.getMotivation();
+		
+		if(step%logPeriod==0)
+			log.info(me+"sending: "+SL.toStr(new float[]{rew,mot}));
 
 		// publish the current reinforcement and motivation values
 		std_msgs.Float32MultiArray fl = dataPublisher.newMessage();
 		fl.setData(new float[]{rew,mot});
-		System.out.println("step "+step+++" publihing r="
-				+rew+" and motivation="+mot);
 		dataPublisher.publish(fl);
 	}
 
@@ -50,5 +64,23 @@ public class BasicMotivation extends AbsMotivationSource {
 	protected boolean isReady() {
 		return (dataPublisher !=null && source!=null 
 				&& t!=null && var!=null && source !=null);
+	}
+
+	@Override
+	protected void registerParameters() {
+		super.registerParameters();
+
+		paramList.addParam(rewardConf, ""+DEF_REWARD, "Node publishes value of reward derivation, this is value of reward published");
+		paramList.addParam(rewardThrConf, ""+DEF_REWTHRESHOLD, "If the sum of rewards on inputs is bigger than this threshold, " +
+				"it is evaluated as reward");
+	}
+
+	@Override
+	protected void parseParameters(ConnectedNode connectedNode) {
+		super.parseParameters(connectedNode);
+		
+		double reward = r.getMyDouble(rewardConf, DEF_REWARD);
+		rewardVal = (float)reward;
+		rewardThr = r.getMyDouble(rewardThrConf, DEF_REWTHRESHOLD);
 	}
 }

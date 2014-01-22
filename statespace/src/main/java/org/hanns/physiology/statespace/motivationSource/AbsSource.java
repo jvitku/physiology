@@ -9,7 +9,7 @@ public abstract class AbsSource implements Source{
 	public static double DEF_MAX = 1;
 	public static double DEF_MIN = 0;
 
-	public static final float DEF_REWARD = 15;//TODO set 1
+	public static final float DEF_REWARD = 1;
 	
 	protected StateVariable myVar;
 	protected Transformation myT;

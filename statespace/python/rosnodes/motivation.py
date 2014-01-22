@@ -19,7 +19,8 @@ classs = "org.hanns.physiology.statespace.ros.BasicMotivation"
 
 
 # Synchronous NeuralModule implementing simple source of agents motivation
-def basic(name, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD):
+def basic(name, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD,
+rewVal=Motivation.DEF_REWARD, rewThr=Motivation.DEF_REWTHRESHOLD):
 
     # configure the node during startup from "the commandline"
 	command = [classs, '_'+Motivation.noInputsConf+ ':=' + str(noInputs), 
@@ -42,10 +43,11 @@ def basic(name, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, lo
 	return module
 
 # adds to the network MotivationSource and constant source of config signal, returns the source
-def basicConfigured(name, net, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD):
+def basicConfigured(name, net, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD, 
+rewVal=Motivation.DEF_REWARD, rewThr=Motivation.DEF_REWTHRESHOLD):
 
 	# build the node
-	bb = basic(name, noInputs, decay, logPeriod)
+	bb = basic(name, noInputs, decay, logPeriod,rewThr,rewVal)
 	net.add(bb)
 
 	# define the signal source which provides value of the default decay

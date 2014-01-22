@@ -9,7 +9,7 @@ import org.hanns.physiology.statespace.variables.AbsStateVariable;
  * 
  *  Note that all values on multidimensional input are 
  *  summed together. If the value received is the same or 
- *  higher than the {@link #THRESHOLD}, the variable 
+ *  higher than the {@link #DEF_THRESHOLD}, the variable 
  *  returns to the limbo area, nothing happens in other cases.
  * 
  * @author Jaroslav Vitku
@@ -17,10 +17,13 @@ import org.hanns.physiology.statespace.variables.AbsStateVariable;
  */
 public class LinearDecay extends AbsStateVariable{
 	
-	public static final double THRESHOLD = 1;
+	public static final double DEF_THRESHOLD = 0.9;
+	
+	private final double threshold;
 
 	public LinearDecay(int numDimensions){
 		super(numDimensions);
+		this.threshold = DEF_THRESHOLD;
 	}
 
 	/**
@@ -34,6 +37,24 @@ public class LinearDecay extends AbsStateVariable{
 	public LinearDecay(int numDimensions, double decayStep){
 		super(numDimensions);
 		this.decay = decayStep;
+		this.threshold = DEF_THRESHOLD;
+	}
+
+	/**
+	 * Set number of dimensions of the input and how fast the
+	 * variable should decay from the limbo area (1) towards the
+	 * purgatory area in (0). Decay is for one step.
+	 * 
+	 * @param numDimensions number of dimensions of input data
+	 * @param decayStep how much to decay for each simulation step
+	 * @param threshold - defines minimum value on input that is evaluated 
+	 * as a reward. If the received value is equal or bigger than threshold
+	 * the state is moved to the limbo area.
+	 */
+	public LinearDecay(int numDimensions, double decayStep, double threshold){
+		super(numDimensions);
+		this.decay = decayStep;
+		this.threshold = threshold;
 	}
 
 	@Override
@@ -42,9 +63,9 @@ public class LinearDecay extends AbsStateVariable{
 
 		if(!super.checkDimensions(input))
 			return;
-
+		
 		double in = this.sum(input);
-		if(in >= THRESHOLD){
+		if(in >= this.threshold){
 			this.myValue = DEF_LIMBO;
 			this.justReinforced = true;
 		}else{

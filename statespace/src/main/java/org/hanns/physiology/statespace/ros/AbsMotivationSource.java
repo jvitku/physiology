@@ -21,13 +21,14 @@ import ctu.nengoros.util.SL;
 public abstract class AbsMotivationSource extends AbstractHannsNode{
 
 	public static final String NAME = "LinearPhysVar";
+	public static final String me = "["+NAME+"] ";
 
 	/**
 	 * Node IO
 	 */
 	public static final String topicDataOut = io+"MotivationReward";
 	public static final String topicDataIn  = io+"Reward";
-	
+
 	/**
 	 * Variable configuration
 	 */
@@ -69,6 +70,9 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		this.parseParameters(connectedNode);
 		// this.registerObservers(); // TODO
 
+		this.myLog(me+"Creating data structures.");
+		this.initStructures();
+		
 		myLog(me+"initializing ROS Node IO");
 
 		// this.buildProsperityPublisher(connectedNode); // TODO
@@ -76,7 +80,6 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		this.buildDataIO(connectedNode);
 
 		myLog(me+"Node configured and ready now!");
-
 	}
 
 	@Override
@@ -129,7 +132,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 			}
 		});
 	}
-	
+
 	/**
 	 * New ROS message arrived, process the data and respond
 	 * 
@@ -153,9 +156,6 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 
 		inputDims = r.getMyInteger(noInputsConf, DEF_NOINPUTS);
 		decay = r.getMyDouble(decayConf, DEF_DECAY);
-
-		this.myLog(me+"Creating data structures.");
-		this.initStructures();
 	}
 
 	/**
