@@ -16,9 +16,9 @@ import org.hanns.physiology.statespace.variables.AbsStateVariable;
  *
  */
 public class LinearDecay extends AbsStateVariable{
-	
+
 	public static final double DEF_THRESHOLD = 0.9;
-	
+
 	private final double threshold;
 
 	public LinearDecay(int numDimensions){
@@ -63,7 +63,7 @@ public class LinearDecay extends AbsStateVariable{
 
 		if(!super.checkDimensions(input))
 			return;
-		
+
 		double in = this.sum(input);
 		if(in >= this.threshold){
 			this.myValue = DEF_LIMBO;

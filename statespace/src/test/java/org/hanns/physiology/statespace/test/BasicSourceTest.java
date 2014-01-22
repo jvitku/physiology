@@ -43,16 +43,16 @@ public class BasicSourceTest {
 		s.makeStep(new float[]{0});
 		assertTrue(s.getReinforcement()==0);
 		assertTrue(s.getMotivation()<0.01);
-		
+
 		float prev = s.getMotivation();
-		
+
 		// make few steps..
 		for(int i=1; i<5; i++){
 			s.makeStep(new float[]{0});
-			
+
 			System.out.println("variable is : "+var.getValue()+
 					",motivation is now: "+s.getMotivation());
-			
+
 			assertTrue(s.getMotivation()>prev);
 			prev = s.getMotivation();
 			assertTrue(s.getReinforcement()==0);
@@ -73,9 +73,9 @@ public class BasicSourceTest {
 		}
 		// motivation should be near the maximum
 		assertTrue(s.getMotivation()>0.98);
-		
+
 		s.makeStep(new float[]{1});
-		
+
 		assertTrue(s.getMotivation()<0.01);
 		assertTrue(s.getReinforcement()>=1);
 

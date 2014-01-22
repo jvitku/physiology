@@ -33,10 +33,10 @@ net.add(reward)
 net.connect(reward,	source.getTermination(Motivation.topicDataIn))
 #net.connect(reward,	source.newTerminationFor(Motivation.topicDataIn,[1]))
 
-
 print 'Configuration complete.'
 print ''
 print 'One motiavtion source is connected to its configuration (defining decay speed)'
 print 'and source of motivation, if the motivation is above the threshold, the '
 print 'physiological variable returns to the limbo area, where no motivation is produced.'
 print 'With thime, the motivaiton increases again.'
+

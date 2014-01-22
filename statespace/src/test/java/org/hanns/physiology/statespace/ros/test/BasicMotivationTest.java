@@ -17,7 +17,7 @@ import ctu.nengoros.nodes.RosCommunicationTest;
  */
 public class BasicMotivationTest extends RosCommunicationTest{
 
-	public static int log = 50; // log period
+	public static int log = 50; 								// log period
 	public static final double dec = BasicMotivation.DEF_DECAY; // set the decay
 
 	public static final String SRC =
@@ -30,10 +30,8 @@ public class BasicMotivationTest extends RosCommunicationTest{
 	public static final String MAP = 
 			"org.hanns.physiology.statespace.ros.testnodes.MotivationReceiver";
 
-	public static final String[] MAP_command = new String[]{
-		MAP,"_logPeriod:="+log};
-	
-	
+	public static final String[] MAP_command = new String[]{MAP,"_logPeriod:="+log};
+
 	/**
 	 * The simplest one
 	 */
@@ -69,8 +67,7 @@ public class BasicMotivationTest extends RosCommunicationTest{
 		assertTrue(map.lastRecMotivation > 0.99);
 		assertTrue(map.lastRecReward ==0);
 	}
-	
-	
+
 	/**
 	 * Let the motivation increase and then send reward, motivation should go to 0
 	 */
@@ -116,9 +113,9 @@ public class BasicMotivationTest extends RosCommunicationTest{
 		System.out.println("Last motivation was "+map.lastRecMotivation+" and the reward: "+map.lastRecReward);
 		assertTrue(map.lastRecReward >=1);
 	}
-	
+
 	/**
-	 * Motiavtion increases, send reward, wait for the motivaiton to increase again
+	 * Motivation increases, send reward, wait for the motivation to increase again
 	 */
 	@Test
 	public void restart(){
@@ -182,7 +179,7 @@ public class BasicMotivationTest extends RosCommunicationTest{
 	/**
 	 * Wait at least a given number of simulation steps 
 	 * @param map node with motivaitonReceiver
-	 * @param numSteps num steps to wait (messages exchanged)
+	 * @param numSteps number steps to wait (messages exchanged)
 	 */
 	private void waitForDecay(MotivationReceiver map, int numSteps){
 
