@@ -61,8 +61,6 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
-		
-		
 		log = connectedNode.getLog();
 
 		log.info(me+"started, parsing parameters");
@@ -147,6 +145,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 	@Override
 	public ProsperityObserver getProsperityObserver() {
 		// TODO Auto-generated method stub
+		System.err.println("ProsperityObserver is TODO");
 		return null;
 	}
 
@@ -170,6 +169,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 
 	@Override
 	protected void publishProsperity() {
+		System.err.println("Prosperity publishing is TODO");
 		// TODO Auto-generated method stub
 	}
 
