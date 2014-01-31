@@ -1,13 +1,13 @@
 package org.hanns.physiology.statespace.ros.test;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.hanns.physiology.statespace.ros.BasicMotivation;
 import org.hanns.physiology.statespace.ros.testnodes.MotivationReceiver;
 import org.junit.Test;
 
 import ctu.nengoros.RosRunner;
+import ctu.nengoros.network.common.exceptions.StartupDelayException;
 import ctu.nengoros.network.node.testsuit.RosCommunicationTest;
 
 /**
@@ -35,6 +35,7 @@ public class BasicMotivationTest extends RosCommunicationTest{
 	/**
 	 * The simplest one
 	 */
+	@Test
 	public void motivationIncreases(){
 
 		// launch nodes
@@ -50,10 +51,17 @@ public class BasicMotivationTest extends RosCommunicationTest{
 		assertTrue(mapr.getNode() instanceof MotivationReceiver);
 		MotivationReceiver map = (MotivationReceiver)mapr.getNode();
 
-		map.awaitInited();
-		mt.awaitInited();
+		try {
+			map.awaitStarted();
+			mt.awaitStarted();
+		} catch (StartupDelayException e) {
+			System.out.println("waited too long, fail..");
+			e.printStackTrace();
+			fail();
+		}
+		
 
-		sleep(300); 	// TODO: this may be necessary still..
+		sleep(300); 	// TODO: #ROScommInited
 
 		System.out.println("Initializeing the simulation now");
 		map.sendReward();	// initiate the communication
@@ -71,6 +79,7 @@ public class BasicMotivationTest extends RosCommunicationTest{
 	/**
 	 * Let the motivation increase and then send reward, motivation should go to 0
 	 */
+	@Test
 	public void decayMotivationStopAndReward(){
 
 		// launch nodes
@@ -86,10 +95,16 @@ public class BasicMotivationTest extends RosCommunicationTest{
 		assertTrue(mapr.getNode() instanceof MotivationReceiver);
 		MotivationReceiver map = (MotivationReceiver)mapr.getNode();
 
-		map.awaitInited();
-		mt.awaitInited();
+		try {
+			map.awaitStarted();
+			mt.awaitStarted();
+		} catch (StartupDelayException e) {
+			System.out.println("waited too long, fail..");
+			e.printStackTrace();
+			fail();
+		}
 
-		sleep(300); 	// TODO: this may be necessary still..
+		sleep(300); 	// TODO: #ROScommInited
 
 		System.out.println("Initializeing the simulation now");
 		map.sendReward();	// initiate the communication
@@ -110,7 +125,8 @@ public class BasicMotivationTest extends RosCommunicationTest{
 
 		// check whether the motivation is small and that the reward was passed through
 		assertTrue(map.lastRecMotivation < 0.1);
-		System.out.println("Last motivation was "+map.lastRecMotivation+" and the reward: "+map.lastRecReward);
+		System.out.println("Last motivation was "+map.lastRecMotivation+" and the reward: "+
+		map.lastRecReward);
 		assertTrue(map.lastRecReward >=1);
 	}
 
@@ -133,10 +149,17 @@ public class BasicMotivationTest extends RosCommunicationTest{
 		assertTrue(mapr.getNode() instanceof MotivationReceiver);
 		MotivationReceiver map = (MotivationReceiver)mapr.getNode();
 
-		map.awaitInited();
-		mt.awaitInited();
+		try {
+			map.awaitStarted();
+			mt.awaitStarted();
+		} catch (StartupDelayException e) {
+			System.out.println("waited too long, fail..");
+			e.printStackTrace();
+			fail();
+		}
 
-		sleep(300); 	// TODO: this may be necessary still..
+
+		sleep(300); 	// TODO #ROScommInited
 
 		System.out.println("Initializeing the simulation now");
 		map.sendReward();	// initiate the communication
@@ -146,7 +169,8 @@ public class BasicMotivationTest extends RosCommunicationTest{
 		this.waitForDecay(map, numSteps);
 
 		// check whether no reward is received and whether the motivation is high
-		System.out.println("Last motivation was "+map.lastRecMotivation+" and the reward: "+map.lastRecReward);
+		System.out.println("Last motivation was "+map.lastRecMotivation+" and the reward: "
+		+map.lastRecReward);
 		assertTrue(map.lastRecMotivation > 0.99);
 		assertTrue(map.lastRecReward ==0);
 

@@ -8,6 +8,7 @@ import org.ros.node.topic.Subscriber;
 
 import ctu.nengoros.network.node.AbstractHannsNode;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
+import ctu.nengoros.network.node.synchedStart.StartupManager;
 import ctu.nengoros.util.SL;
 
 /**
@@ -38,6 +39,8 @@ public class MotivationReceiver extends AbstractHannsNode{
 	public float lastRecReward = -1;
 
 	private volatile boolean allowAutoResponse = true;	// event-driven opearation?
+	
+	private String fullName = name;
 
 	/**
 	 * Node IO
@@ -57,7 +60,7 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 		this.buildDataIO(connectedNode);
 
-		super.fullName = connectedNode.getResolver().getNamespace()+s+name;
+		this.fullName = super.getFullName(connectedNode);
 		
 		System.out.println("\n\nNode initialized. Use methods sendRward(), getStep() etc..");
 	}
@@ -110,7 +113,7 @@ public class MotivationReceiver extends AbstractHannsNode{
 				else{
 					// here, the state description is decoded and one SARSA step executed
 					if(step % logPeriod==0)
-						myLog(me+"<-"+topicDataIn+" Received new reward data: "
+						System.out.println(me+"<-"+topicDataIn+" Received new reward data: "
 								+SL.toStr(data));
 					// implement this
 					onNewDataReceived(data);
@@ -147,27 +150,27 @@ public class MotivationReceiver extends AbstractHannsNode{
 	}
 
 	@Override
-	protected void publishProsperity() {}
+	public void publishProsperity() {}
 
 	@Override
 	protected void registerParameters() {}
 
 	@Override
-	public boolean isReady(){
+	public boolean isStarted(){
 		return (log!=null && dataPublisher!=null);
 	}
 
 	@Override
-	public float getProsperity() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	public float getProsperity() { return 0; }
 
 	@Override
-	public String listParams() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public String listParams() {return null; }
+
+	@Override
+	public String getFullName() { return this.fullName; }
+
+	@Override
+	public StartupManager getStartupManager() { return this.startup; }
 
 
 }

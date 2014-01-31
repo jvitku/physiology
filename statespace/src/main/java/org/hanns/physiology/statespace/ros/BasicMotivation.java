@@ -61,7 +61,7 @@ public class BasicMotivation extends AbsMotivationSource {
 	}
 
 	@Override
-	protected boolean isReady() {
+	public boolean isStarted() {
 		return (dataPublisher !=null && source!=null 
 				&& t!=null && var!=null && source !=null);
 	}
@@ -89,4 +89,6 @@ public class BasicMotivation extends AbsMotivationSource {
 
 	@Override
 	public String listParams() { return this.paramList.listParams(); }
+
+
 }

@@ -16,6 +16,7 @@ import ctu.nengoros.network.node.infrastructure.rosparam.impl.PrivateRosparam;
 import ctu.nengoros.network.node.infrastructure.rosparam.manager.ParamList;
 import ctu.nengoros.network.node.observer.Observer;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
+import ctu.nengoros.network.node.synchedStart.StartupManager;
 import ctu.nengoros.util.SL;
 
 public abstract class AbsMotivationSource extends AbstractHannsNode{
@@ -55,33 +56,36 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 	protected StateVariable var;	// state variable implementation 
 	protected Source source;		// motivation source
 	protected Transformation t;		// transforms var->motivation
-
+	
+	protected String fullName = NAME;
+	
 	@Override
 	public GraphName getDefaultNodeName() { return GraphName.of(NAME); }
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
 		log = connectedNode.getLog();
+		//logger = new SL(this.get)
 
-		log.info(me+"started, parsing parameters");
+		System.out.println(me+"started, parsing parameters");
 		this.registerParameters();
 		paramList.printParams();
 
 		this.parseParameters(connectedNode);
 		// this.registerObservers(); // TODO
 
-		this.myLog(me+"Creating data structures.");
+		System.out.println(me+"Creating data structures.");
 		this.initStructures();
 		
-		myLog(me+"initializing ROS Node IO");
+		System.out.println(me+"initializing ROS Node IO");
 
 		// this.buildProsperityPublisher(connectedNode); // TODO
 		this.buildConfigSubscribers(connectedNode);
 		this.buildDataIO(connectedNode);
 		
-		super.fullName = connectedNode.getResolver().getNamespace()+s+name;
-
-		myLog(me+"Node configured and ready now!");
+		fullName = super.getFullName(connectedNode);
+		System.out.println(me+"Node configured and ready now!");
+		
 	}
 
 	@Override
@@ -126,7 +130,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 				else{
 					// here, the state description is decoded and one SARSA step executed
 					if(step % logPeriod==0)
-						myLog(me+"<-"+topicDataIn+" Received new reward data: "
+						System.out.println(me+"<-"+topicDataIn+" Received new reward data: "
 								+SL.toStr(data));
 					// implement this
 					onNewDataReceived(data);
@@ -155,7 +159,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		logToFile= r.getMyBoolean(logToFileConf, DEF_LTF);
 		logPeriod = r.getMyInteger(logPeriodConf, DEF_LOGPERIOD);
 
-		this.myLog(me+"parsing parameters");
+		System.out.println(me+"parsing parameters");
 
 		inputDims = r.getMyInteger(noInputsConf, DEF_NOINPUTS);
 		decay = r.getMyDouble(decayConf, DEF_DECAY);
@@ -168,7 +172,7 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 	public abstract void initStructures();
 
 	@Override
-	protected void publishProsperity() {
+	public void publishProsperity() {
 		System.err.println("Prosperity publishing is TODO");
 		// TODO Auto-generated method stub
 	}
@@ -185,4 +189,10 @@ public abstract class AbsMotivationSource extends AbstractHannsNode{
 		paramList.addParam(decayConf, ""+DEF_DECAY, "Speed of decay of state variable each simulation step.");
 	}
 
+	@Override
+	public String getFullName() { return this.fullName; }
+
+	@Override
+	public StartupManager getStartupManager() { return this.startup; }
+	
 }
