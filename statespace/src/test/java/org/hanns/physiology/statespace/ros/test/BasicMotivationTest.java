@@ -59,7 +59,6 @@ public class BasicMotivationTest extends RosCommunicationTest{
 			e.printStackTrace();
 			fail();
 		}
-		
 
 		sleep(300); 	// TODO: #ROScommInited
 
