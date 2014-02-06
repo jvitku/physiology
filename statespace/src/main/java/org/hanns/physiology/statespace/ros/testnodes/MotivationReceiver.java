@@ -32,13 +32,14 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 	public static final int DLP = 100; // default log period
 
-	// default reinforcement to be sent after pressing thee nter
+	// default reinforcement to be sent after pressing the enter
 	public static final int DEFR = 2;
 
 	public float lastRecMotivation = -1;
 	public float lastRecReward = -1;
 
-	private volatile boolean allowAutoResponse = true;	// event-driven opearation?
+	public static final boolean DEF_AUTORESPONSE = true;// event-driven operaation?
+	private volatile boolean allowAutoResponse = DEF_AUTORESPONSE;	
 	
 	private String fullName = name;
 
@@ -171,6 +172,20 @@ public class MotivationReceiver extends AbstractHannsNode{
 
 	@Override
 	public StartupManager getStartupManager() { return this.startup; }
+
+	@Override
+	public void hardReset(boolean randomize) {
+		this.step = 0;
+		lastRecMotivation = -1;
+		lastRecReward = -1;
+	}
+
+	@Override
+	public void softReset(boolean randomize) {
+		this.step = 0;
+		lastRecMotivation = -1;
+		lastRecReward = -1;
+	}
 
 
 }

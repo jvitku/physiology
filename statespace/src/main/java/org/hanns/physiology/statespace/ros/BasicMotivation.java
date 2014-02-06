@@ -90,5 +90,17 @@ public class BasicMotivation extends AbsMotivationSource {
 	@Override
 	public String listParams() { return this.paramList.listParams(); }
 
+	@Override
+	public void hardReset(boolean randomize) {
+		this.var.hardReset(randomize);
+		this.source.hardReset(randomize);
+	}
+
+	@Override
+	public void softReset(boolean randomize){
+		this.var.softReset(randomize);
+		this.source.softReset(randomize);
+	}
+
 
 }

@@ -7,7 +7,7 @@ import org.hanns.physiology.statespace.variables.StateVariable;
 public class BasicSource extends AbsSource{
 
 	private final float reward;
-	
+
 	public BasicSource(StateVariable var,Transformation t){
 		super(var,t);
 		this.reward = DEF_REWARD;
