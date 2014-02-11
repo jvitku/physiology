@@ -51,12 +51,12 @@ public abstract class AbsStateVariable implements StateVariable{
 	public float getValue() { return (float)myValue; }
 
 	@Override
-	public void hardReset(boolean arg0) {
-		this.softReset(arg0);
+	public void hardReset(boolean randomize) {
+		this.softReset(randomize);
 	}
 
 	@Override
-	public void softReset(boolean arg0) {
+	public void softReset(boolean randomize) {
 		this.justReinforced = false;
 		this.myValue = INIT_VAL;
 	}

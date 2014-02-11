@@ -6,7 +6,7 @@ import org.ros.namespace.GraphName;
 import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
-import ctu.nengoros.network.node.AbstractHannsNode;
+import ctu.nengoros.network.node.AbstractConfigurableHannsNode;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
 import ctu.nengoros.network.node.synchedStart.StartupManager;
 import ctu.nengoros.util.SL;
@@ -22,7 +22,7 @@ import ctu.nengoros.util.SL;
  * @author Jaroslav Vitku
  *
  */
-public class MotivationReceiver extends AbstractHannsNode{
+public class MotivationReceiver extends AbstractConfigurableHannsNode{
 
 	public final int sleeptime = 10;
 	public final int maxwait = 10000;
