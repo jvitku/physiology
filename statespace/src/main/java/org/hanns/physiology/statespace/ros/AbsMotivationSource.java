@@ -73,7 +73,6 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		paramList.printParams();
 
 		this.parseParameters(connectedNode);
-		
 
 		System.out.println(me+"Creating data structures.");
 		this.initStructures();
@@ -126,6 +125,7 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		dataSub.addMessageListener(new MessageListener<std_msgs.Float32MultiArray>() {
 			@Override
 			public void onNewMessage(std_msgs.Float32MultiArray message) {
+				step++;
 				float[] data = message.getData();
 
 				if(data.length != inputDims)
@@ -135,7 +135,7 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 					// here, the state description is decoded and one SARSA step executed
 					if(step % logPeriod==0)
 						System.out.println(me+"<-"+topicDataIn+" Received new reward data: "
-								+SL.toStr(data));
+								+SL.toStr(data)+"  step: "+step);
 					// implement this
 					onNewDataReceived(data);
 				}
@@ -168,8 +168,9 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	protected void parseParameters(ConnectedNode connectedNode) {
 		r = new PrivateRosparam(connectedNode);
 		logToFile= r.getMyBoolean(logToFileConf, DEF_LTF);
+		
 		logPeriod = r.getMyInteger(logPeriodConf, DEF_LOGPERIOD);
-
+		System.out.println("log period is!!! "+logPeriod+" def is: "+DEF_LOGPERIOD+" str: "+logPeriodConf);
 		System.out.println(me+"parsing parameters");
 
 		inputDims = r.getMyInteger(noInputsConf, DEF_NOINPUTS);
@@ -234,3 +235,4 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	@Override
 	public LinkedList<Observer> getObservers() { return this.observers; }
 }
+
