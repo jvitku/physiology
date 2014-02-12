@@ -1,5 +1,6 @@
-package org.hanns.physiology.statespace.observers;
+package org.hanns.physiology.statespace.observers.impl;
 
+import org.hanns.physiology.statespace.observers.StateSpaceProsperityObserver;
 import org.hanns.physiology.statespace.variables.StateVariable;
 
 import ctu.nengoros.network.node.observer.stats.AbsProsperityObserver;
@@ -13,18 +14,12 @@ import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
  *  
  * @author Jaroslav Vitku
  */
-public class ProsperityMSD extends AbsProsperityObserver{
+public class ProsperityMSD extends AbsProsperityObserver implements StateSpaceProsperityObserver{
 
 	public final String name = "ProsperityMSD";
 	public final String explanation = "Prosperity measure based on the Mean" +
 			"State Distance to optimal conditions (MSD)," +
 			" the smaller mean distance, the higher prosperity.";
-
-	// dist = sum(dist_i)
-	// msd = dist/step;
-	public double dist;	// total distance to optimal conditions (added each step) 
-
-	// each step, measure how far from the limbo area the parent is
 
 	private MSD msd;
 
@@ -35,8 +30,8 @@ public class ProsperityMSD extends AbsProsperityObserver{
 	}
 
 	@Override
-	public void observe(int prevAction, float reward, int[] currentState, int futureAction){
-		msd.observe(prevAction, reward, currentState, futureAction);
+	public void observe(){
+		msd.observe();
 		step++;
 
 		if(this.shouldVis  && step % visPeriod==0)

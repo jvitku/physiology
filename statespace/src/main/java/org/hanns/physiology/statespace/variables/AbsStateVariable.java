@@ -61,16 +61,4 @@ public abstract class AbsStateVariable implements StateVariable{
 		this.myValue = INIT_VAL;
 	}
 
-	@Override
-	public boolean isInLimbo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public boolean isCritical() {
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

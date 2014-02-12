@@ -1,5 +1,6 @@
-package org.hanns.physiology.statespace.observers;
+package org.hanns.physiology.statespace.observers.impl;
 
+import org.hanns.physiology.statespace.observers.StateSpaceProsperityObserver;
 import org.hanns.physiology.statespace.variables.StateVariable;
 
 import ctu.nengoros.network.node.observer.stats.AbsProsperityObserver;
@@ -12,7 +13,7 @@ import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
  * 
  * @author Jaroslav Vitku
  */
-public class MSD extends AbsProsperityObserver{
+public class MSD extends AbsProsperityObserver implements StateSpaceProsperityObserver{
 
 	public final String name = "MSD";
 	public final String explanation = "Value from [0,1] telling the" +
@@ -31,7 +32,7 @@ public class MSD extends AbsProsperityObserver{
 	}
 
 	@Override
-	public void observe(int prevAction, float reward, int[] currentState, int futureAction){
+	public void observe(){
 		step++;
 		
 		dist += parent.getDistToLibo();	// add to sup

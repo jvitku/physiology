@@ -1,6 +1,9 @@
-package org.hanns.physiology.statespace.observers;
+package org.hanns.physiology.statespace.observers.impl;
+
+import org.hanns.physiology.statespace.observers.StateSpaceProsperityObserver;
 
 import ctu.nengoros.network.node.observer.stats.AbsProsperityObserver;
+
 
 
 /**
@@ -10,7 +13,7 @@ import ctu.nengoros.network.node.observer.stats.AbsProsperityObserver;
  * @author Jaroslav Vitku
  *
  */
-public class MCR extends AbsProsperityObserver{
+public class MCR extends AbsProsperityObserver implements StateSpaceProsperityObserver{
 
 	public final String name = "MCR";
 	public final String explanation = "Value from [0,1] defining" +
@@ -20,9 +23,9 @@ public class MCR extends AbsProsperityObserver{
 	private int rewards = 0;
 
 	@Override
-	public void observe(int prevAction, float reward, int[] currentState,
-			int futureAction) {
-
+	public void observe() {
+		
+		step++;
 		rewards++;
 	}
 
@@ -46,4 +49,5 @@ public class MCR extends AbsProsperityObserver{
 
 	@Override
 	public String getDescription() { return explanation;	}
+
 }

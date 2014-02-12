@@ -3,7 +3,7 @@ package org.hanns.physiology.statespace.variables.impl;
 import org.hanns.physiology.statespace.variables.AbsStateVariable;
 
 /**
- * This state variable lineary decays from limbo area (1)
+ * This state variable linearly decays from limbo area (1)
  * towards the purgatory one (0) each step by the value of
  * the variable {@link #decay}.
  * 
@@ -87,5 +87,11 @@ public class LinearDecay extends AbsStateVariable{
 	public double getDistToLibo() {
 		return DEF_LIMBO - this.myValue;
 	}
+
+	@Override
+	public boolean isInLimbo() { return this.myValue>=DEF_LIMBO; }
+
+	@Override
+	public boolean isCritical() { return this.myValue <=DEF_CRITICAL; }
 
 }

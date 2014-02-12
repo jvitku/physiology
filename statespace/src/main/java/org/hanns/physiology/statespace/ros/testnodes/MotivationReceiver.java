@@ -32,16 +32,16 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 
 	public static final int DLP = 100; // default log period
 
-	// default reinforcement to be sent after pressing the enter
-	public static final int DEFR = 2;
+	// default reinforcement to be sent (e.g. after pressing the enter)
+	public static final int DEFR = 1;
 
 	public float lastRecMotivation = -1;
 	public float lastRecReward = -1;
 
 	public static final boolean DEF_AUTORESPONSE = true;// event-driven operaation?
-	private volatile boolean allowAutoResponse = DEF_AUTORESPONSE;	
+	protected volatile boolean allowAutoResponse = DEF_AUTORESPONSE;	
 	
-	private String fullName = name;
+	protected String fullName = name;
 
 	/**
 	 * Node IO
@@ -52,7 +52,7 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 	public static final String topicDataOut = AbsMotivationSource.topicDataIn;
 
 	public int inputDims = 2;	// publishes motivation and reward
-	private int step = 0;
+	protected int step = 0;
 
 	@Override
 	public void onStart(ConnectedNode connectedNode) {
