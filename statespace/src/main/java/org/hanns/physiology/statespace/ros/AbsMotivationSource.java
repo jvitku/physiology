@@ -90,6 +90,7 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		
 	}
 
+	
 	@Override
 	protected void buildConfigSubscribers(ConnectedNode connectedNode) {
 		/**
@@ -209,4 +210,6 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	@Override
 	public StartupManager getStartupManager() { return this.startup; }
 	
+	@Override
+	public LinkedList<Observer> getObservers() { return this.observers; }
 }

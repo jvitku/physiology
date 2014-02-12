@@ -1,5 +1,7 @@
 package org.hanns.physiology.statespace.ros.testnodes;
 
+import java.util.LinkedList;
+
 import org.hanns.physiology.statespace.ros.AbsMotivationSource;
 import org.ros.message.MessageListener;
 import org.ros.namespace.GraphName;
@@ -7,6 +9,7 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
 import ctu.nengoros.network.node.AbstractConfigurableHannsNode;
+import ctu.nengoros.network.node.observer.Observer;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
 import ctu.nengoros.network.node.synchedStart.StartupManager;
 import ctu.nengoros.util.SL;
@@ -186,6 +189,9 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 		lastRecMotivation = -1;
 		lastRecReward = -1;
 	}
+
+	@Override
+	public LinkedList<Observer> getObservers() { return null; }
 
 
 }

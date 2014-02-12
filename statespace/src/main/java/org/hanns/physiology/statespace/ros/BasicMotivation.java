@@ -1,11 +1,15 @@
 package org.hanns.physiology.statespace.ros;
 
+import java.util.LinkedList;
+
 import org.hanns.physiology.statespace.motivationSource.impl.BasicSource;
+import org.hanns.physiology.statespace.observers.StateSpaceObserver;
 import org.hanns.physiology.statespace.observers.impl.ProsperityMSD;
 import org.hanns.physiology.statespace.transformations.impl.Sigmoid;
 import org.hanns.physiology.statespace.variables.impl.LinearDecay;
 import org.ros.node.ConnectedNode;
 
+import ctu.nengoros.network.node.observer.Observer;
 import ctu.nengoros.util.SL;
 
 
@@ -27,12 +31,12 @@ import ctu.nengoros.util.SL;
  *
  */
 public class BasicMotivation extends AbsMotivationSource {
-	
+
 	// value of reward that is published further after receiving a reward
 	public static final float DEF_REWARD = BasicSource.DEF_REWARD;
 	public static final String rewardConf = "rewardValue";
 	public float rewardVal;
-	
+
 	// all values above this value are evaluated as receiving reward  
 	public static final double DEF_REWTHRESHOLD = LinearDecay.DEF_THRESHOLD;
 	public static final String rewardThrConf = "rewardThrValue";
@@ -40,10 +44,12 @@ public class BasicMotivation extends AbsMotivationSource {
 
 	@Override
 	protected void registerObservers() {
+		observers = new LinkedList<Observer>();
 		this.o = new ProsperityMSD(this.var);
+		observers.add(o);
 	}
 
-	
+
 	@Override
 	public void initStructures() {
 		this.t = new Sigmoid();
@@ -54,11 +60,13 @@ public class BasicMotivation extends AbsMotivationSource {
 	@Override
 	protected void onNewDataReceived(float[] data) {
 		this.source.makeStep(data);
-		this.o.observe();
+		
+		for(int i=0; i<observers.size(); i++)
+			((StateSpaceObserver)observers.get(i)).observe();
 
 		float rew = this.source.getReinforcement();
 		float mot = this.source.getMotivation();
-		
+
 		if(step%logPeriod==0)
 			log.info(me+"sending: "+SL.toStr(new float[]{rew,mot}));
 
@@ -86,7 +94,7 @@ public class BasicMotivation extends AbsMotivationSource {
 	@Override
 	protected void parseParameters(ConnectedNode connectedNode) {
 		super.parseParameters(connectedNode);
-		
+
 		double reward = r.getMyDouble(rewardConf, DEF_REWARD);
 		rewardVal = (float)reward;
 		rewardThr = r.getMyDouble(rewardThrConf, DEF_REWTHRESHOLD);
@@ -109,7 +117,6 @@ public class BasicMotivation extends AbsMotivationSource {
 		this.var.softReset(randomize);
 		this.source.softReset(randomize);
 	}
-
 
 
 }
