@@ -59,7 +59,8 @@ public class ProsperityMSD extends AbsProsperityObserver implements StateSpacePr
 
 	@Override
 	public ProsperityObserver[] getChilds() {
-		return new ProsperityObserver[]{msd};	// one child
+		return null;	// since prosperity is 1-msd, will publish only prosperity
+		//return new ProsperityObserver[]{msd};	// one child
 	}
 
 	@Override
