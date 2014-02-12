@@ -74,6 +74,9 @@ public class BasicMotivation extends AbsMotivationSource {
 		std_msgs.Float32MultiArray fl = dataPublisher.newMessage();
 		fl.setData(new float[]{rew,mot});
 		dataPublisher.publish(fl);
+		
+		// publish current value of the prosperity
+		this.publishProsperity();
 	}
 
 	@Override

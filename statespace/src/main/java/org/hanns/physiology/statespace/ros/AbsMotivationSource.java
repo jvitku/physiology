@@ -81,7 +81,7 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		System.out.println(me+"initializing ROS Node IO");
 
 		this.registerObservers(); 	
-		this.buildProsperityPublisher(connectedNode);	// TODO 
+		super.buildProsperityPublisher(connectedNode);
 		this.buildConfigSubscribers(connectedNode);
 		this.buildDataIO(connectedNode);
 		
@@ -142,6 +142,8 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		});
 	}
 
+	
+	
 	/**
 	 * New ROS message arrived, process the data and respond
 	 * 
@@ -186,10 +188,28 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	@Override
 	public void buildProsperityPublisher(ConnectedNode connectedNode){}
 
+	/**
+	 * By default, the prosperity vector should have length of 1 (ProsperityMSD)
+	 */
 	@Override
-	public void publishProsperity() {
-		System.err.println("Prosperity publishing is TODO");
-		// TODO Auto-generated method stub, ROS publisher not added so far 
+	public void publishProsperity(){
+
+		float[] data;
+		std_msgs.Float32MultiArray fl = prospPublisher.newMessage();
+
+		if(o.getChilds() == null){
+			data = new float[]{o.getProsperity()};
+		}else{
+			ProsperityObserver[] childs = o.getChilds();	
+			data = new float[childs.length+1];
+			data[0] = o.getProsperity();
+
+			for(int i=0; i<childs.length; i++){
+				data[i+1] = childs[i].getProsperity();
+			}
+		}
+		fl.setData(data);
+		prospPublisher.publish(fl);
 	}
 
 	@Override
