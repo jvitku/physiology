@@ -24,13 +24,17 @@ public class MCR extends AbsProsperityObserver implements StateSpaceProsperityOb
 
 	@Override
 	public void observe() {
-		
+
 		step++;
 		rewards++;
 	}
 
 	@Override
-	public float getProsperity() { return (float)(rewards/step); }
+	public float getProsperity() {
+		if(step<=0)
+			return 0;
+		return (float)(rewards/step);
+	}
 
 	@Override
 	public void softReset(boolean randomize) {

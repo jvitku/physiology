@@ -22,10 +22,10 @@ public class MSD extends AbsProsperityObserver implements StateSpaceProsperityOb
 	// dist = sum(dist_i)
 	// msd = dist/step;
 	public double dist;	// total distance to optimal conditions (added each step) 
-	
+
 	// each step, measure how far from the limbo area the parent is
 	StateVariable parent;	
-	
+
 	public MSD(StateVariable parent){
 		this.parent = parent;
 		this.hardReset(false);
@@ -34,7 +34,6 @@ public class MSD extends AbsProsperityObserver implements StateSpaceProsperityOb
 	@Override
 	public void observe(){
 		step++;
-		
 		dist += parent.getDistToLibo();	// add to sup
 
 		if(this.shouldVis  && step % visPeriod==0)
@@ -43,6 +42,8 @@ public class MSD extends AbsProsperityObserver implements StateSpaceProsperityOb
 
 	@Override
 	public float getProsperity() {
+		if(step<=0)
+			return 0;
 		// compute the MSD value
 		return (float)dist/step;				
 	}
@@ -50,14 +51,12 @@ public class MSD extends AbsProsperityObserver implements StateSpaceProsperityOb
 	@Override
 	public void softReset(boolean randomize) {
 		super.softReset(randomize);
-		
 		this.dist = 0;	//should it be here?
 	}
-	
+
 	@Override
 	public void hardReset(boolean randomize) {
 		super.hardReset(randomize);
-		
 		this.dist = 0;
 	}
 
@@ -65,7 +64,7 @@ public class MSD extends AbsProsperityObserver implements StateSpaceProsperityOb
 	public ProsperityObserver[] getChilds() {
 		return null;
 	}
-	
+
 	@Override
 	public String getName() { return name;	}
 

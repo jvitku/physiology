@@ -25,5 +25,6 @@ TODO
 -------
 
 * Define and publish prosperity: MSD vs. MCR? 
+* Publish prosperity over the ROS network as in the rl/sarsa?
 * How to store data (prosperity) for multiple nodes?
 * Support for randomized reset, e.g. in the `org.hanns.physiology.statespace.variables.AbsStateVariable#hardReset(boolean randomize)`. Currently, after reset the variable is put into the limbo area.

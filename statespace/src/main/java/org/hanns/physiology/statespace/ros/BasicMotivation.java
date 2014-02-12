@@ -1,6 +1,7 @@
 package org.hanns.physiology.statespace.ros;
 
 import org.hanns.physiology.statespace.motivationSource.impl.BasicSource;
+import org.hanns.physiology.statespace.observers.impl.ProsperityMSD;
 import org.hanns.physiology.statespace.transformations.impl.Sigmoid;
 import org.hanns.physiology.statespace.variables.impl.LinearDecay;
 import org.ros.node.ConnectedNode;
@@ -38,6 +39,12 @@ public class BasicMotivation extends AbsMotivationSource {
 	public double rewardThr;
 
 	@Override
+	protected void registerObservers() {
+		this.o = new ProsperityMSD(this.var);
+	}
+
+	
+	@Override
 	public void initStructures() {
 		this.t = new Sigmoid();
 		this.var = new LinearDecay(this.inputDims,this.decay, this.rewardThr);
@@ -47,6 +54,7 @@ public class BasicMotivation extends AbsMotivationSource {
 	@Override
 	protected void onNewDataReceived(float[] data) {
 		this.source.makeStep(data);
+		this.o.observe();
 
 		float rew = this.source.getReinforcement();
 		float mot = this.source.getMotivation();
@@ -101,6 +109,7 @@ public class BasicMotivation extends AbsMotivationSource {
 		this.var.softReset(randomize);
 		this.source.softReset(randomize);
 	}
+
 
 
 }

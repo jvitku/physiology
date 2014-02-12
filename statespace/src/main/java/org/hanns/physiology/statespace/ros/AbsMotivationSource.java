@@ -3,7 +3,7 @@ package org.hanns.physiology.statespace.ros;
 import java.util.LinkedList;
 
 import org.hanns.physiology.statespace.motivationSource.Source;
-import org.hanns.physiology.statespace.observers.impl.MSD;
+import org.hanns.physiology.statespace.observers.StateSpaceProsperityObserver;
 import org.hanns.physiology.statespace.transformations.Transformation;
 import org.hanns.physiology.statespace.variables.StateVariable;
 import org.hanns.physiology.statespace.variables.impl.LinearDecay;
@@ -47,7 +47,7 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	/**
 	 * HannsNode stuff
 	 */
-	protected ProsperityObserver o;				// observes the prosperity of node
+	protected StateSpaceProsperityObserver o;				// observes the prosperity of node
 	protected LinkedList<Observer> observers;	// logging & visualization TODO
 
 	/**
@@ -73,14 +73,15 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		paramList.printParams();
 
 		this.parseParameters(connectedNode);
-		//this.registerObservers(); 	// TODO ?
+		
 
 		System.out.println(me+"Creating data structures.");
 		this.initStructures();
 		
 		System.out.println(me+"initializing ROS Node IO");
 
-		this.buildProsperityPublisher(connectedNode); 
+		this.registerObservers(); 	
+		this.buildProsperityPublisher(connectedNode);	// TODO 
 		this.buildConfigSubscribers(connectedNode);
 		this.buildDataIO(connectedNode);
 		
@@ -89,12 +90,6 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		
 	}
 
-	@Override
-	public void buildProsperityPublisher(ConnectedNode connectedNode){
-		//o = new MSD();
-		
-	}
-	
 	@Override
 	protected void buildConfigSubscribers(ConnectedNode connectedNode) {
 		/**
@@ -153,6 +148,11 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	 */
 	protected abstract void onNewDataReceived(float[] data);
 
+	/**
+	 * Initialize observer(s), mainly the Observer o;
+	 */
+	protected abstract void registerObservers();
+	
 	@Override
 	public ProsperityObserver getProsperityObserver() {
 		// TODO Auto-generated method stub
@@ -178,10 +178,17 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 	 */
 	public abstract void initStructures();
 
+	/**
+	 * Initialize prosperity publisher
+	 */
+	
+	@Override
+	public void buildProsperityPublisher(ConnectedNode connectedNode){}
+
 	@Override
 	public void publishProsperity() {
 		System.err.println("Prosperity publishing is TODO");
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub, ROS publisher not added so far 
 	}
 
 	@Override
