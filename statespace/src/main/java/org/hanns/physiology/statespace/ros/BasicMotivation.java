@@ -113,12 +113,16 @@ public class BasicMotivation extends AbsMotivationSource {
 	public void hardReset(boolean randomize) {
 		this.var.hardReset(randomize);
 		this.source.hardReset(randomize);
+		for(int i=0;i<observers.size(); i++)
+			observers.get(i).hardReset(randomize);
 	}
 
 	@Override
 	public void softReset(boolean randomize){
 		this.var.softReset(randomize);
 		this.source.softReset(randomize);
+		for(int i=0;i<observers.size(); i++)
+			observers.get(i).softReset(randomize);
 	}
 
 

@@ -80,7 +80,8 @@ public abstract class AbsMotivationSource extends AbstractConfigurableHannsNode{
 		
 		System.out.println(me+"initializing ROS Node IO");
 
-		this.registerObservers(); 	
+		this.registerObservers();
+		this.registerSimulatorCommunication(connectedNode);
 		super.buildProsperityPublisher(connectedNode);
 		this.buildConfigSubscribers(connectedNode);
 		this.buildDataIO(connectedNode);
