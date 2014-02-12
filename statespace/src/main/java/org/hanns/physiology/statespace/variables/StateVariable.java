@@ -46,6 +46,14 @@ public interface StateVariable extends Resettable{
 	public boolean isInLimbo();
 	
 	/**
+	 * Get the distance from the nearest limbo area. 
+	 * This value should be (normalized to) in the interval [0,1].
+	 *  
+	 * @return distance to the limbo area.
+	 */
+	public double getDistToLibo();
+	
+	/**
 	 * If the state space variable value is in the critical state.
 	 * 
 	 * @return if true, agent should die from critical value of this variable

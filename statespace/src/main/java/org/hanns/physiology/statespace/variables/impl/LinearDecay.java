@@ -83,4 +83,9 @@ public class LinearDecay extends AbsStateVariable{
 		return out;
 	}
 
+	@Override
+	public double getDistToLibo() {
+		return DEF_LIMBO - this.myValue;
+	}
+
 }
