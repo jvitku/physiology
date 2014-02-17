@@ -6,3 +6,4 @@ bin/
 build/
 statespace/.settings/*
 statespace/build/tmp/*
+statespace/.classpath
