@@ -24,6 +24,7 @@ Currently only a simple implementation of linear decay 1D state variables is use
 TODO
 -------
 
+* Rename topic from MotivationReward to RewardMotivation
 * Add testing of ROS reset
 * How to store data (prosperity) for multiple nodes? So far in jython launch script..
 * Support for randomized reset, e.g. in the `org.hanns.physiology.statespace.variables.AbsStateVariable#hardReset(boolean randomize)`. Currently, after reset the variable is put into the limbo area.
