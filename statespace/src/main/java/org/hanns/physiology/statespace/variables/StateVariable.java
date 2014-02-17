@@ -69,7 +69,7 @@ public interface StateVariable extends Resettable{
 	public int getDimensions();
 	
 	/**
-	 * Set decay: how fast the variable should decay towards purgatory area
+	 * Set decay: how fast the variable should decay towards purgatory area.
 	 * @param decay interval [0,1] defining speed of decay
 	 */
 	public void setDecay(double decay);

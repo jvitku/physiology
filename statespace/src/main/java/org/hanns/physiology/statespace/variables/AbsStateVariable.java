@@ -1,6 +1,22 @@
 package org.hanns.physiology.statespace.variables;
 
+/**
+ * 
+ * This class expects that the {@link #DEF_LIMBO} is < {@link #DEF_CRITICAL}
+ * and the value of state variable goes from the limbo towards the critical. 
+ * 
+ * The speed of decay is set by the {@link #setDecay(double)}. The value of
+ * the decay is expected in range of 0,1, if the value is set outside of this 
+ * interval, min/max is used instead.
+ * 
+ *  
+ * @author Jaroslav Vitku
+ *
+ */
 public abstract class AbsStateVariable implements StateVariable{
+
+	public static final float MIN_DECAY = 0;
+	public static final float MAX_DECAY = 1;
 
 	public static final float DEF_LIMBO = 1;
 	public static final float DEF_CRITICAL = 0;
@@ -36,6 +52,17 @@ public abstract class AbsStateVariable implements StateVariable{
 	}
 
 	public void setDecay(double decay){
+		if(decay > MAX_DECAY){
+			System.err.println("StateVariable: WARNING: decay is expected"
+					+ " from the range ["+MIN_DECAY+", "+MAX_DECAY+"], "
+					+ "will use: "+MAX_DECAY);
+			decay = MAX_DECAY;
+		}else if(decay < MIN_DECAY){
+			System.err.println("StateVariable: WARNING: decay is expected"
+					+ " from the range ["+MIN_DECAY+", "+MAX_DECAY+"], "
+					+ "will use: "+MIN_DECAY);
+			decay = MIN_DECAY;
+		}
 		this.decay = decay;
 	}
 

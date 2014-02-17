@@ -72,6 +72,8 @@ public class LinearDecay extends AbsStateVariable{
 			this.myValue  = this.myValue - this.decay;
 			if(this.myValue < DEF_CRITICAL)
 				this.myValue = DEF_CRITICAL;
+			else if(this.myValue > DEF_LIMBO)
+				this.myValue = DEF_LIMBO;
 		}
 	}
 
