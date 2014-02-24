@@ -17,7 +17,6 @@ from org.hanns.physiology.statespace.ros import BasicMotivation as Motivation
 # java classes
 classs = "org.hanns.physiology.statespace.ros.BasicMotivation"
 
-
 # Synchronous NeuralModule implementing simple source of agents motivation
 def basic(name, noInputs=Motivation.DEF_NOINPUTS, decay=Motivation.DEF_DECAY, logPeriod=Motivation.DEF_LOGPERIOD,
 rewVal=Motivation.DEF_REWARD, rewThr=Motivation.DEF_REWTHRESHOLD):
@@ -32,15 +31,12 @@ rewVal=Motivation.DEF_REWARD, rewThr=Motivation.DEF_REWTHRESHOLD):
 	module = NeuralModule(name+'_Motivation', g, False)
 
     # connect the decay parameter to the Nengoros network (changed online)
-	module.createEncoder(Motivation.topicDecay,"float", 1); 			# decay config
-
-    # TODO - MSD from the limbo area
-	#module.createDecoder(Motivation.topicProsperity,"float",1);		# float[]{prosperity}
+	module.createConfigEncoder(Motivation.topicDecay,"float", 1); 		# decay config (unconneced=Motivation.DEF_DECAY)
 
 	module.createDecoder(Motivation.topicDataOut, "float", 2)           # decode float[]{reward,motivation}
 	module.createEncoder(Motivation.topicDataIn, "float", noInputs) 	# encode input data (sum rewards here)
 	
-	module.createDecoder(Motivation.topicProsperity,"float", 1);			# float[]{prosperity}
+	module.createDecoder(Motivation.topicProsperity,"float", 1);		# float[]{prosperity}  = MSD from the limbo area
 
 	return module
 
