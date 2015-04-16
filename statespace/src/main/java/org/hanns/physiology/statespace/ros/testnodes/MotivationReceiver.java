@@ -88,6 +88,7 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 	 * publishes reward over the ROS network to a predefined topic
 	 */
 	public void sendReward(){
+		System.out.println("sending reward back now");
 		std_msgs.Float32MultiArray message = dataPublisher.newMessage();
 		message.setData(new float[]{DEFR});
 		dataPublisher.publish(message);
@@ -131,7 +132,7 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 	 * @param data array of floats received from the basic Source motivation
 	 */
 	protected void onNewDataReceived(float[] data){
-		System.out.println(step+++"new data "+SL.toStr(data));
+		System.out.println(this.fullName+" "+step+++" new data received: "+SL.toStr(data));
 
 		this.lastRecReward = data[0];
 		this.lastRecMotivation = data[1];

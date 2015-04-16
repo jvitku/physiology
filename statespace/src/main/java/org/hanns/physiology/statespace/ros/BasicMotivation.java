@@ -111,6 +111,7 @@ public class BasicMotivation extends AbsMotivationSource {
 
 	@Override
 	public void hardReset(boolean randomize) {
+		this.step = 0;
 		this.var.hardReset(randomize);
 		this.source.hardReset(randomize);
 		for(int i=0;i<observers.size(); i++)
@@ -119,6 +120,7 @@ public class BasicMotivation extends AbsMotivationSource {
 
 	@Override
 	public void softReset(boolean randomize){
+		this.step = 0;
 		this.var.softReset(randomize);
 		this.source.softReset(randomize);
 		for(int i=0;i<observers.size(); i++)
