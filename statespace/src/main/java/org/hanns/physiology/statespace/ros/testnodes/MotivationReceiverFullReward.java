@@ -1,7 +1,5 @@
 package org.hanns.physiology.statespace.ros.testnodes;
 
-import ctu.nengoros.util.SL;
-
 /**
  * The same as motivation Receiver, but here, reward is sent each step
  * 
@@ -16,6 +14,7 @@ public class MotivationReceiverFullReward extends MotivationReceiver{
 	 * Allow event-driven operation of the node?
 	 * @param response false if the response should not be sent automatically
 	 */
+	@Override
 	public void setAutoResponse(boolean response){
 		this.allowAutoResponse = response;
 	}
@@ -25,8 +24,9 @@ public class MotivationReceiverFullReward extends MotivationReceiver{
 	 * 
 	 * @param data array of floats received from the basic Source motivation
 	 */
+	@Override
 	protected void onNewDataReceived(float[] data){
-		System.out.println(this.fullName+" "+step+++" new data received: "+SL.toStr(data));
+		step++;
 		
 		this.lastRecReward = data[0];
 		this.lastRecMotivation = data[1];
@@ -37,4 +37,3 @@ public class MotivationReceiverFullReward extends MotivationReceiver{
 	}
 
 }
-

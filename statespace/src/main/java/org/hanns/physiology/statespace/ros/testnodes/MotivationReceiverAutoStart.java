@@ -32,7 +32,7 @@ public class MotivationReceiverAutoStart extends MotivationReceiverFullReward{
 			protected void loop() throws InterruptedException {
 				Thread.sleep(1000);
 				if(!dataExchanged){
-					log.info(me+"No incomming data detected, publishing new reward message");
+					log.info(me+"No incomming data detected, publishing new reward message x");
 					sendReward();
 				}
 				dataExchanged = false;

@@ -9,6 +9,7 @@ import org.ros.node.ConnectedNode;
 import org.ros.node.topic.Subscriber;
 
 import ctu.nengoros.network.node.AbstractConfigurableHannsNode;
+import ctu.nengoros.network.node.infrastructure.rosparam.impl.PrivateRosparam;
 import ctu.nengoros.network.node.observer.Observer;
 import ctu.nengoros.network.node.observer.stats.ProsperityObserver;
 import ctu.nengoros.network.node.synchedStart.StartupManager;
@@ -62,6 +63,7 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 		log = connectedNode.getLog();
 		log.info(me+"started, parsing parameters");
 
+		this.parseParameters(connectedNode);
 		this.buildDataIO(connectedNode);
 
 		this.fullName = super.getFullName(connectedNode);
@@ -88,9 +90,9 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 	 * publishes reward over the ROS network to a predefined topic
 	 */
 	public void sendReward(){
-		System.out.println("sending reward back now");
 		std_msgs.Float32MultiArray message = dataPublisher.newMessage();
 		message.setData(new float[]{DEFR});
+		System.out.println(this.getFullName()+" sending reward back now, val: "+DEFR);
 		dataPublisher.publish(message);
 	}
 
@@ -119,7 +121,8 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 					// here, the state description is decoded and one SARSA step executed
 					if(step % logPeriod==0)
 						System.out.println(me+"<-"+topicDataIn+" Received new reward data: "
-								+SL.toStr(data));
+								+SL.toStr(data)+" step:"+step);
+						
 					// implement this
 					onNewDataReceived(data);
 				}
@@ -147,10 +150,13 @@ public class MotivationReceiver extends AbstractConfigurableHannsNode{
 	@Override
 	public ProsperityObserver getProsperityObserver() { return null; }
 
-
+	
 	@Override
-	protected void parseParameters(ConnectedNode arg0) { 
-		this.logPeriod = DLP;
+	protected void parseParameters(ConnectedNode connectedNode) {
+		r = new PrivateRosparam(connectedNode);
+		logToFile= r.getMyBoolean(logToFileConf, DEF_LTF);
+		
+		logPeriod = r.getMyInteger(logPeriodConf, DEF_LOGPERIOD);
 		this.step = 0;
 	}
 
